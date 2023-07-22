@@ -23,7 +23,6 @@
     "axios": "^0.21.1",
     "chai": "^4.3.7",
     "chai-http": "^4.4.0",
-    "consolidate": "^0.16.0",
     "cookie-parser": "^1.4.4",
     "deep-clone": "^3",
     "dotenv": "^8.2.0",

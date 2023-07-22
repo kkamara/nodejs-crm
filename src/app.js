@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const sanitize = require('sanitize');
 const minifyHTML = require("express-minify-html")
 const express = require('express');
-const cons = require('consolidate');
 const session = require('express-session')
 
 const config = require('./config');
@@ -12,11 +11,8 @@ const routes = require('./routes');
 
 const app = express();
 
-// assign the pug engine to .html files
-app.engine('html', cons.pug);
-
 // set .html as the default extension
-app.set('view engine', 'html');
+app.set('view engine', 'pug');
 app.set('views', path.join(
     __dirname,
     './views',
