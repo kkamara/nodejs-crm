@@ -11,7 +11,6 @@ const routes = require('./routes');
 
 const app = express();
 
-// set .html as the default extension
 app.set('view engine', 'pug');
 app.set('views', path.join(
     __dirname,
