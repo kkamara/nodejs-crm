@@ -24,14 +24,9 @@ authenticate.post('/', async (req, res) => {
 
   const token = req.headers.authorization
     .replace('Basic ', '');
-  try {
-    req.session.auth = await getUserByToken(token);
-    req.session.auth.token = token;
-    if (req.session.auth === false) {
-      res.status(401);
-      return res.json({ message: 'Unauthorized.' });
-    }
-  } catch (err) {
+  req.session.auth = await getUserByToken(token);
+  req.session.auth.token = token;
+  if (req.session.auth === false) {
     res.status(401);
     return res.json({ message: 'Unauthorized.' });
   }

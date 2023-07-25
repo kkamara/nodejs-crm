@@ -24,6 +24,9 @@ form.addEventListener('submit', async function(event) {
     if (err.response && err.response.data.errors) {
       message = err.response.data.errors[0];
     }
+    if (err.response && err.response.data.error) {
+      message = err.response.data.error;
+    }
     document.querySelector('.email')
       .classList
       .add('is-invalid');

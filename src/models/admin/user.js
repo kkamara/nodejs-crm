@@ -1,8 +1,8 @@
 'use strict';
 
 const { QueryTypes, } = require('sequelize');
-const config = require('../config');
-const db = require('../database');
+const config = require('../../config');
+const db = require('../../database');
 
 /**
  * @param {Number} id The authenticated dashboard user's id.
