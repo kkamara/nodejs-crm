@@ -118,7 +118,7 @@ login.post('/', async (req, res) => {
       routeName: session.page.title,
       user: session,
     },
-});
+  });
 });
 
 module.exports = login;
