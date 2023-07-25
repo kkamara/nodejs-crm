@@ -86,7 +86,7 @@ login.post('/', async (req, res) => {
     });
   });
 
-  const validInput = user.validateAuthenticate(req.bodyString('email'), res.body.password);
+  const validInput = validateAuthenticate(req.bodyString('email'), res.body.password);
   if (validInput !== true) {
     req.session.page.error = validInput[0];
     newSession = { page: req.session.page, auth: req.session.auth, };
@@ -100,7 +100,7 @@ login.post('/', async (req, res) => {
     });
   }
 
-  const user = user.authenticate(req.bodyString('email'), res.body.password);
+  const user = authenticate(req.bodyString('email'), res.body.password);
   if (!user) {
     req.session.page.error = 'Unable to authenticate user due to invalid combination.';
     newSession = { page: req.session.page, auth: req.session.auth, };
