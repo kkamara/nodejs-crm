@@ -1,9 +1,7 @@
 'use strict';
 const express = require('express');
-const { QueryTypes, } = require('sequelize');
 const deepClone = require('deep-clone');
 const config = require('../../config');
-const db = require('../../database');
 const { 
   validateAuthenticate,
   authenticate: auth,

@@ -1,8 +1,12 @@
 'use strict';
 const express = require('express');
-const { QueryTypes, } = require('sequelize');
 const deepClone = require('deep-clone');
-const user = require('../../../models/user');
+const { 
+  validateAuthenticate,
+  authenticate: auth,
+  getNewToken,
+  getUserByToken,
+} = require('../../../models/user');
 
 const login = express.Router();
 
