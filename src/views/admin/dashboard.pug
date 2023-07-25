@@ -157,40 +157,40 @@ main.app-content
         i.icon.bi.bi-people.fs-1
         .info
           h4 Users
-  //-         p
-  //-           b.usersCount 5
-  //-   .col-md-6.col-lg-3
-  //-     .widget-small.info.coloured-icon
-  //-       i.icon.bi.bi-heart.fs-1
-  //-       .info
-  //-         h4 Likes
-  //-         p
-  //-           b 25
-  //-   .col-md-6.col-lg-3
-  //-     .widget-small.warning.coloured-icon
-  //-       i.icon.bi.bi-folder2.fs-1
-  //-       .info
-  //-         h4 Uploades
-  //-         p
-  //-           b 10
-  //-   .col-md-6.col-lg-3
-  //-     .widget-small.danger.coloured-icon
-  //-       i.icon.bi.bi-star.fs-1
-  //-       .info
-  //-         h4 Stars
-  //-         p
-  //-           b 500
-  //- .row
-  //-   .col-md-6
-  //-     .tile
-  //-       h3.tile-title Monthly Sales
-  //-       .ratio.ratio-16x9
-  //-         canvas#salesChart
-  //-   .col-md-6
-  //-     .tile
-  //-       h3.tile-title Support Requests
-  //-       .ratio.ratio-16x9.d-flex.justify-content-center
-  //-         canvas#supportRequestChart
+          p
+            b.usersCount 5
+    .col-md-6.col-lg-3.hide
+      .widget-small.info.coloured-icon
+        i.icon.bi.bi-heart.fs-1
+        .info
+          h4 Likes
+          p
+            b 25
+    .col-md-6.col-lg-3.hide
+      .widget-small.warning.coloured-icon
+        i.icon.bi.bi-folder2.fs-1
+        .info
+          h4 Uploades
+          p
+            b 10
+    .col-md-6.col-lg-3.hide
+      .widget-small.danger.coloured-icon
+        i.icon.bi.bi-star.fs-1
+        .info
+          h4 Stars
+          p
+            b 500
+  .row.hide
+    .col-md-6
+      .tile
+        h3.tile-title Monthly Sales
+        .ratio.ratio-16x9
+          canvas#salesChart
+    .col-md-6
+      .tile
+        h3.tile-title Support Requests
+        .ratio.ratio-16x9.d-flex.justify-content-center
+          canvas#supportRequestChart
 
 // Essential javascripts for application to work
 script(src='/admin/js/jquery-3.7.0.min.js')
