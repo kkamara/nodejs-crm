@@ -15,7 +15,7 @@ const getStats = async (id) => {
       `SELECT count(users.uid) as users_count
       FROM users;`,
     );
-    res = { users_count: results.users_count, }
+    res = { usersCount: results[0].users_count, }
     return { ...res, }
   } catch(err) {
     return res;
