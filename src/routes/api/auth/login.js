@@ -123,7 +123,7 @@ login.post('/', async (req, res) => {
   return res.json({
     data: {
       routeName: session.page.title,
-      user: session,
+      data: session,
     },
   });
 });
