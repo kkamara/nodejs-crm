@@ -180,10 +180,7 @@ const getNewToken = async (id) => {
 };
 
 /**
- * Add logic to authenticate user.
- * - Using cleaned req.bodyString, bcrypt (12 salt rounds) & jsonwebtoken.
- * - Bcrypt token: 
- *    $2a$12$06CVr6F/0HWuTMy4Nh/UB.ICDTGx639ZWRpyeAYMTLjTuSBkAcZny
+ * Authenticate user credentials.
  * @param {string} email
  * @param {string} password
  * @return {object|false}
