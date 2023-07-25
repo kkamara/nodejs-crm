@@ -1,13 +1,7 @@
 'use strict';
 const express = require('express');
 const deepClone = require('deep-clone');
-const config = require('../../config');
-const { 
-  validateAuthenticate,
-  authenticate: auth,
-  getNewToken,
-  getUserByToken,
-} = require('../../models/user');
+const { getUserByToken, } = require('../../models/user');
 
 const authenticate = express.Router();
 
