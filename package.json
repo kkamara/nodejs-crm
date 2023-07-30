@@ -8,6 +8,7 @@
     "start": "yarn node src/app.js",
     "dev": "yarn nodemon src/app.js --trace-warnings",
     "migrate": "yarn node src/commands/migrate/index.js",
+    "seed": "yarn node src/commands/seed/index.js"
   },
   "repository": {
     "type": "git",
