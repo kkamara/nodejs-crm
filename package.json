@@ -31,11 +31,11 @@
     "express-minify-html": "^0.12.0",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
+    "mysql2": "^2",
     "nodemon": "^2.0.22",
     "pug": "^3.0.2",
     "sanitize": "^2.1.0",
     "sequelize": "^6.13.0",
-    "sqlite3": "^5.1.6",
     "vali-admin": "^4.0.0"
   },
   "devDependencies": {
