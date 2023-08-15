@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
           `SELECT count(Users.uid) as usersCount
           FROM Users;`,
         );
-        res = { usersCount: results[0].users_count, }
+        res = { usersCount: results[0].usersCount, }
         return { ...res, }
       } catch(err) {
         return res;

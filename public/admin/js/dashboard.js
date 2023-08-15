@@ -1,13 +1,12 @@
 'use strict';
 
 const run = async () => {
-  let res = null;
   try {
     const token = localStorage.getItem('auth');
     if (null === token) {
       window.location.href = domain+'/admin';
     }
-    res = await axios.post(
+    const authResponse = await axios.post(
       domain+'/admin/authenticate', 
       null,
       {
@@ -16,12 +15,12 @@ const run = async () => {
         },
       },
     );
-    const authData = res.data;
+    const authData = authResponse.data;
     console.log(authData);
     document.querySelector('.fullName')
       .textContent = authData.data.auth.firstName + ' ' + authData.data.auth.lastName;
 
-    res = await axios.post(
+    const page = await axios.post(
       domain+'/admin/dashboard', 
       null,
       {
@@ -30,7 +29,7 @@ const run = async () => {
         },
       },
     );
-    const dashboardData = res.data;
+    const dashboardData = page.data;
     console.log(dashboardData);
     document.querySelector('.usersCount')
       .textContent = dashboardData.data.usersCount;
