@@ -124,11 +124,11 @@ module.exports = (sequelize, DataTypes) => {
       let res = false;
       try {
         const [result, metadata] = await sequelize.query(
-          `SELECT uid, password, passwordSalt, buildingNumber, city, contactNumber, 
-          createdAt, email, emailResetKey, firstName, 
+          `SELECT Users.uid, password, passwordSalt, buildingNumber, 
+          city, contactNumber, Users.createdAt, email, emailResetKey, firstName, 
           lastName, password, lastLogin, rememberToken, streetName,
-          updatedAt, username FROM Users
-          LEFT JOIN UserTokens ON UserTokens.users_id = Users.uid
+          Users.updatedAt, username FROM Users
+          LEFT JOIN UserTokens ON UserTokens.usersId = Users.uid
           WHERE UserTokens.token=? LIMIT 1`, 
           {
               replacements: [ token, ],
@@ -136,8 +136,10 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
         res = result;
+        console.log('res',res);
         return res;
       } catch(err) {
+        console.log('err',err.message);
         return res;
       }
     }
