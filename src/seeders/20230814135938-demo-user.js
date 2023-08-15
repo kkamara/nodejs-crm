@@ -1,9 +1,9 @@
 'use strict';
 const db = require('../models/index');
-const { DataTypes, } = require('sequelize');
-const User = require('../models/user');
-const user = User(db.sequelize, DataTypes);
-const { hash, salt } = user.encrypt('secret');
+
+const { hash, salt } = db.sequelize.models
+  .User
+  .encrypt('secret');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: (queryInterface, Sequelize) => {
