@@ -19,7 +19,7 @@ const run = async () => {
     const authData = res.data;
     console.log(authData);
     document.querySelector('.fullName')
-      .textContent = authData.data.auth.first_name + ' ' + authData.data.auth.last_name;
+      .textContent = authData.data.auth.firstName + ' ' + authData.data.auth.lastName;
 
     res = await axios.post(
       domain+'/admin/dashboard', 
