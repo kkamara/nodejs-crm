@@ -2,7 +2,6 @@
 const { Model, } = require('sequelize');
 const { QueryTypes, } = require('sequelize');
 const config = require('../config');
-const db = require('./index');
 const { validate, } = require('email-validator');
 const { 
   scryptSync, 
@@ -23,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     static async getStats(id) {
       let res = false;
       try {
-        const [results, metadata] = await db.query(
-          `SELECT count(users.uid) as users_count
-          FROM users;`,
+        const [results, metadata] = await sequelize.query(
+          `SELECT count(Users.uid) as usersCount
+          FROM Users;`,
         );
         res = { usersCount: results[0].users_count, }
         return { ...res, }
@@ -53,17 +52,17 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} hashSalt
      * @return {bool}
      */
-    compare(plainText, hash, hashSalt) {  
+    static compare(plainText, hash, hashSalt) {
       let res = false;
       const hashedBuffer = scryptSync(
         plainText, hashSalt, 64,
       );
-
+      
       const keyBuffer = Buffer.from(hash, 'hex');
       const match = timingSafeEqual(hashedBuffer, keyBuffer);
       
       if (!match) {
-          return res;
+        return res;
       }
 
       res = true;
@@ -74,12 +73,12 @@ module.exports = (sequelize, DataTypes) => {
      * @param {Number} id
      * @return {object|false}
      */
-    async refreshUser(id) {
+    static async refreshUser(id) {
       let res = false;
       try {
-        const [results, metadata] = await db.query(
-          `UPDATE users SET updated_at=strftime('%Y-%m-%d %H-%M-%S', 'now')
-            WHERE users.uid = :id`, 
+        const [results, metadata] = await sequelize.query(
+          `UPDATE Users SET updatedAt=NOW()
+            WHERE Users.uid = :id`, 
           {
                 replacements: { id, },
                 type: QueryTypes.UPDATE,
@@ -88,8 +87,8 @@ module.exports = (sequelize, DataTypes) => {
       } catch(err) {
         return res;
       }
-      
-      res = await getUserById(id);
+
+      res = await sequelize.models.User.getUserById(id);
       return res;
     }
 
@@ -97,14 +96,14 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} id
      * @return {object|false}
      */
-    async getUserById(id) {
+    static async getUserById(id) {
       let res = false;
       try {
-        const [result, metadata] = await db.query(
-          `SELECT uid, password, building_number, city, contact_number, 
-          created_at, email, email_reset_key, first_name, 
-          last_name, password, last_login, remember_token, street_name,
-          updated_at, username FROM users WHERE users.uid=? LIMIT 1`, 
+        const [result, metadata] = await sequelize.query(
+          `SELECT uid, password, passwordSalt, buildingNumber, city, contactNumber, 
+          createdAt, email, emailResetKey, firstName, 
+          lastName, password, lastLogin, rememberToken, streetName,
+          updatedAt, username FROM Users WHERE Users.uid=? LIMIT 1`, 
           {
               replacements: [ id, ],
               type: QueryTypes.SELECT,
@@ -124,13 +123,13 @@ module.exports = (sequelize, DataTypes) => {
     static async getUserByToken(token) {
       let res = false;
       try {
-        const [result, metadata] = await db.query(
-          `SELECT users.uid, users.password, users.building_number, users.city, users.contact_number, 
-          users.created_at, users.email, users.email_reset_key, users.first_name, 
-          users.last_name, users.password, users.last_login, users.remember_token, users.street_name,
-          users.updated_at, users.username FROM users 
-          LEFT JOIN users_tokens ON users_tokens.users_id = users.uid
-          WHERE users_tokens.token=? LIMIT 1`, 
+        const [result, metadata] = await sequelize.query(
+          `SELECT uid, password, passwordSalt, buildingNumber, city, contactNumber, 
+          createdAt, email, emailResetKey, firstName, 
+          lastName, password, lastLogin, rememberToken, streetName,
+          updatedAt, username FROM Users
+          LEFT JOIN UserTokens ON UserTokens.users_id = Users.uid
+          WHERE UserTokens.token=? LIMIT 1`, 
           {
               replacements: [ token, ],
               type: QueryTypes.SELECT,
@@ -147,14 +146,14 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} email
      * @return {object|false}
      */
-    async getUser(email) {
+    static async getUser(email) {
       let res = false;
       try {
-        const [result, metadata] = await db.query(
-          `SELECT uid, password, password_salt, building_number, city, contact_number, 
-        created_at, email, email_reset_key, first_name, 
-        last_name, password, last_login, remember_token, street_name,
-        updated_at, username FROM users WHERE users.email=? LIMIT 1`, 
+        const [result, metadata] = await sequelize.query(
+          `SELECT uid, password, passwordSalt, buildingNumber, city, contactNumber, 
+          createdAt, email, emailResetKey, firstName, 
+          lastName, password, lastLogin, rememberToken, streetName,
+          updatedAt, username FROM Users WHERE Users.email=? LIMIT 1`, 
         {
             replacements: [ email, ],
             type: QueryTypes.SELECT,
@@ -176,13 +175,15 @@ module.exports = (sequelize, DataTypes) => {
      * @return {string|false} String token. 
      */
     static async getNewToken(id) {
-      const result = encrypt(config.appKey);
+      const result = sequelize.models
+        .User
+        .encrypt(config.appKey);
       try {
-        const [addToken, metadata] = await db.query(
-          `INSERT INTO users_tokens(
-            users_id, token, created_at, updated_at
+        const [addToken, metadata] = await sequelize.query(
+          `INSERT INTO UserTokens(
+            usersId, token, createdAt, updatedAt
           ) VALUES(
-            ?, ?, strftime('%Y-%m-%d %H-%M-%S', 'now'), strftime('%Y-%m-%d %H-%M-%S', 'now')
+            ?, ?, NOW(), NOW()
           )`, 
           {
               replacements: [ id, result.hash, ],
@@ -190,7 +191,9 @@ module.exports = (sequelize, DataTypes) => {
           },
         );
         
-        const user = await refreshUser(id);
+        const user = await sequelize.models
+          .User
+          .refreshUser(id);
         if (user === false) {
           return false;
         }
@@ -211,22 +214,30 @@ module.exports = (sequelize, DataTypes) => {
      */
     static async authenticate(email, password) {
       let res = false;
-        
-      const user = await getUser(email);
+      
+      const user = await sequelize.models
+        .User
+        .getUser(email);
       if (!user) {
         return res;
       }
       
-      const compareHash = compare(
-        password,
-        user.password,
-        user.password_salt
-      );
+      const compareHash = sequelize.models
+        .User
+        .compare(
+          password,
+          user.password,
+          user.passwordSalt
+        );
+        
       if (compareHash === false) {
         return res;
       }
-
-      res = await refreshUser(user.uid);
+      
+      res = await sequelize.models
+        .User
+        .refreshUser(user.uid);
+      
       return res;
     }
 
