@@ -121,7 +121,7 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} token
      * @return {object|false}
      */
-    async getUserByToken(token) {
+    static async getUserByToken(token) {
       let res = false;
       try {
         const [result, metadata] = await db.query(
@@ -175,7 +175,7 @@ module.exports = (sequelize, DataTypes) => {
      * @param {Number} id User's id.
      * @return {string|false} String token. 
      */
-    async getNewToken(id) {
+    static async getNewToken(id) {
       const result = encrypt(config.appKey);
       try {
         const [addToken, metadata] = await db.query(
@@ -209,7 +209,7 @@ module.exports = (sequelize, DataTypes) => {
      * @param {string} password
      * @return {object|false}
      */
-    async authenticate(email, password) {
+    static async authenticate(email, password) {
       let res = false;
         
       const user = await getUser(email);
@@ -236,7 +236,7 @@ module.exports = (sequelize, DataTypes) => {
     * @param {string} password 
     * @return {true|array}
     */
-    validateAuthenticate(email, password) {
+    static validateAuthenticate(email, password) {
       let res = [];
       if (!email) {
         res.push('Missing email field.');

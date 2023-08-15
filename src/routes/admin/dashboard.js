@@ -2,10 +2,7 @@
 const express = require('express');
 const deepClone = require('deep-clone');
 const config = require('../../config');
-const { getUserByToken, } = require('../../models/user');
 const db = require('../../models/index');
-const { DataTypes, } = require('sequelize');
-const User = require('../../models/user');
 
 const dashboard = express.Router();
 
@@ -56,7 +53,9 @@ dashboard.post('/', async (req, res) => {
 
   const token = req.headers.authorization
     .replace('Basic ', '');
-  req.session.auth = await getUserByToken(token);
+  req.session.auth = await db.sequelize.models
+    .User
+    .getUserByToken(token);
   req.session.auth.token = token;
   if (req.session.auth === false) {
     res.status(401);
@@ -78,10 +77,11 @@ dashboard.post('/', async (req, res) => {
     });
   });
 
-  const user = User(db.sequelize, DataTypes);
-  const stats = await user.getStats(
-    req.session.auth.uid,
-  );
+  const stats = await db.sequelize.models
+    .User
+    .getStats(
+      req.session.auth.uid,
+    );
   if (stats === false) {
     res.status(500);
     return res.json({ 

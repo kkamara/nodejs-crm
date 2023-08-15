@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const deepClone = require('deep-clone');
-const { getUserByToken, } = require('../../../models/user');
+const db = require('../../../models/index');
 
 const authenticate = express.Router();
 
@@ -16,7 +16,9 @@ authenticate.post('/', async (req, res) => {
 
   const token = req.headers.authorization
     .replace('Basic ', '');
-  req.session.auth = await getUserByToken(token);
+  req.session.auth = await db.sequelize.models
+    .User
+    .getUserByToken(token);
   req.session.auth.token = token;
   if (req.session.auth === false) {
     res.status(401);

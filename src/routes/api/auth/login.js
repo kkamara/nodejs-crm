@@ -1,11 +1,7 @@
 'use strict';
 const express = require('express');
 const deepClone = require('deep-clone');
-const {
-  validateAuthenticate,
-  authenticate,
-  getNewToken,
-} = require('../../../models/user');
+const db = require('../../../models/index');
 
 const login = express.Router();
 
@@ -73,7 +69,7 @@ login.post('/', async (req, res) => {
     });
   });
 
-  const validInput = validateAuthenticate(
+  const validInput = db.sequelize.models.User.validateAuthenticate(
     req.bodyString('email'),
     req.bodyString('password'),
   );
@@ -85,10 +81,12 @@ login.post('/', async (req, res) => {
     });
   }
 
-  req.session.auth = await authenticate(
-    req.bodyString('email'),
-    req.bodyString('password'),
-  );  
+  req.session.auth = await db.sequelize.models
+    .User
+    .authenticate(
+      req.bodyString('email'),
+      req.bodyString('password'),
+    );  
   if (false === req.session.auth) {
     res.status(400);
     return res.json({
@@ -97,9 +95,11 @@ login.post('/', async (req, res) => {
     });
   }
   
-  req.session.auth.token = await getNewToken(
-    req.session.auth.uid,
-  );  
+  req.session.auth.token = await db.sequelize.models
+    .User
+    .getNewToken(
+      req.session.auth.uid,
+    );  
   if (false === req.session.auth.token) {
     res.status(500);
     return res.json({
