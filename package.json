@@ -5,8 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "test": "mocha tests/",
-    "start": "yarn node src/app.js",
-    "dev": "yarn nodemon src/app.js --trace-warnings",
+    "start": "DEBUG=express:* yarn node src/app.js",
+    "dev": "DEBUG=express:* yarn nodemon src/app.js --trace-warnings",
     "migrate": "npx sequelize-cli db:migrate --config='./config.json' --models-path='src/models' --migrations-path='src/migrations' --seeders-path='src/seeders'",
     "migrate:undo": "npx sequelize-cli db:migrate:undo --config='./config.json' --models-path='src/models' --migrations-path='src/migrations' --seeders-path='src/seeders'",
     "seed": "npx sequelize-cli db:seed:all --config='./config.json' --models-path='src/models' --migrations-path='src/migrations' --seeders-path='src/seeders'",
@@ -34,6 +34,7 @@
     "express-minify-html": "^0.12.0",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
     "mysql2": "^2",
     "nodemon": "^2.0.22",
     "pug": "^3.0.2",

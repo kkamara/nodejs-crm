@@ -5,11 +5,22 @@ const sanitize = require('sanitize');
 const minifyHTML = require("express-minify-html")
 const express = require('express');
 const session = require('express-session')
+const fs = require('fs');
+const morgan = require('morgan');
 
 const config = require('./config');
 const routes = require('./routes');
 
 const app = express();
+
+const accessLogStream = fs.createWriteStream(
+    path.join(__dirname, '..', 'logs', 'nodejs_crm.log'), 
+    { flags: 'a' },
+);
+app.use(morgan(
+    'combined', 
+    { stream: accessLogStream },
+));
 
 app.set('view engine', 'pug');
 app.set('views', path.join(
