@@ -1,17 +1,20 @@
-name: Run CI
+name: Tests Pipeline
 
 on: [push, pull_request]
 
+env:
+  NODE_ARGS: "NODE_ENV='test'"
+
 jobs:
   nodejs-crm:
-    name: pipeline (Node ${{ matrix.node-version }})
+    name: Tests Pipeline (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: 'secret'
-          MYSQL_DATABASE: 'nrb-db'
+          MYSQL_DATABASE: 'nodejs_crm'
           MYSQL_USER: 'user'
           MYSQL_PASSWORD: 'secret'
         ports:
@@ -31,13 +34,15 @@ jobs:
         flags: --immutable-cache
     - name: Setup Env Variables
       run: |
-          cp .env.example .env
-          sed -i "s/APP_URL=http:\/\/localhost/APP_URL=http:\/\/127.0.0.1:8000/g" .env
-          sed -i "s/3306/${{ job.services.mysql.ports['3306'] }}/g" .env
-          sed -i "s/DB_HOST=mysql/DB_HOST=127.0.0.1/g" .env
-          sed -i "s/local/testing/g" .env
+          cp .env.testing .env
+          sed -i "s/3306/${{ job.services.mysql.ports['3306'] }}/g" config.json
     - name: Install dependencies
       run: yarn install --silent
+    - name: Run database migrations
+      run: ${{ env.NODE_ARGS }} yarn migrate
+    - name: Run database seeders
+      run: ${{ env.NODE_ARGS }} yarn seed
+    - name: Run server in background
+      run: yarn start &
     - name: Run tests
       run: yarn run test
-

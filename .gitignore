@@ -5,3 +5,4 @@ database.sqlite
 /.DS_Store
 *.php
 db.sqlite
+tmp

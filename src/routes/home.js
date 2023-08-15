@@ -3,14 +3,14 @@ const express = require('express');
 const { QueryTypes, } = require('sequelize');
 const deepClone = require('deep-clone');
 const config = require('../config');
-const db = require('../database');
+const db = require('../models');
 
 const home = express.Router();
 
 home.get('/dashboard', async (req, res) => {
-  const adminUser = 3;
-  const [results, metadata] = await db.query(
-      "SELECT uid FROM users WHERE users.uid = ? ORDER BY uid DESC LIMIT 1", 
+  const adminUser = 'example@example.com';
+  const [results, metadata] = await db.sequelize.query(
+      "SELECT id FROM users WHERE users.email = ? ORDER BY id DESC LIMIT 1", 
       {
           replacements: [ adminUser, ],
           type: QueryTypes.SELECT,

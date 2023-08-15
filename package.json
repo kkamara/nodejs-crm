@@ -7,8 +7,10 @@
     "test": "mocha tests/",
     "start": "yarn node src/app.js",
     "dev": "yarn nodemon src/app.js --trace-warnings",
-    "migrate": "yarn node src/commands/migrate/index.js",
-    "seed": "yarn node src/commands/seed/index.js"
+    "migrate": "npx sequelize-cli db:migrate --config='./config.json' --models-path='src/models' --migrations-path='src/migrations' --seeders-path='src/seeders'",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo --config='./config.json' --models-path='src/models' --migrations-path='src/migrations' --seeders-path='src/seeders'",
+    "seed": "npx sequelize-cli db:seed:all --config='./config.json' --models-path='src/models' --migrations-path='src/migrations' --seeders-path='src/seeders'",
+    "seed:undo:all": "npx sequelize-cli db:seed:undo --config='./config.json' --models-path='src/models' --migrations-path='src/migrations' --seeders-path='src/seeders'"
   },
   "repository": {
     "type": "git",

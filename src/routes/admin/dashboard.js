@@ -3,7 +3,9 @@ const express = require('express');
 const deepClone = require('deep-clone');
 const config = require('../../config');
 const { getUserByToken, } = require('../../models/user');
-const { getStats, } = require('../../models/admin/user');
+const db = require('../../models/index');
+const { DataTypes, } = require('sequelize');
+const User = require('../../models/user');
 
 const dashboard = express.Router();
 
@@ -76,7 +78,8 @@ dashboard.post('/', async (req, res) => {
     });
   });
 
-  const stats = await getStats(
+  const user = User(db.sequelize, DataTypes);
+  const stats = await user.getStats(
     req.session.auth.uid,
   );
   if (stats === false) {
