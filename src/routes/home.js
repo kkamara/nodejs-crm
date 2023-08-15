@@ -9,13 +9,18 @@ const home = express.Router();
 
 home.get('/dashboard', async (req, res) => {
   const adminUser = 'example@example.com';
-  const [results, metadata] = await db.sequelize.query(
-      "SELECT id FROM users WHERE users.email = ? ORDER BY id DESC LIMIT 1", 
+  let results, metadata;
+  try {
+    [results, metadata] = await db.sequelize.query(
+      "SELECT uid FROM users WHERE users.email = ? ORDER BY uid DESC LIMIT 1", 
       {
           replacements: [ adminUser, ],
           type: QueryTypes.SELECT,
       },
-  );
+    );
+  } catch (err) {
+    console.log(err.message)
+  }
 
   req.session.page = { title: 'Dashboard', };
   req.session.auth = {
