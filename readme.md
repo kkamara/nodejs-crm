@@ -77,6 +77,8 @@ export SEQUELIZE_ARGS="--config='./config.json' --models-path='src/models' --mig
 ```bash
 # Docs:
 #   https://sequelize.org/docs/v6/other-topics/migrations/
+# Running a specific database seeder
+npx sequelize-cli db:seed --seed 20230814135938-demo-user.js $SEQUELIZE_ARGS
 # Creating a model & migration
 npx sequelize-cli model:generate --name User --attributes firstName:string,lastName:string,email:string $SEQUELIZE_ARGS
 # Creating a migration
