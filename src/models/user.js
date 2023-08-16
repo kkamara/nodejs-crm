@@ -269,6 +269,49 @@ module.exports = (sequelize, DataTypes) => {
       }
       return res;
     }
+
+    static async userHasPermission(id, permissionId) {
+      let res = false;
+      try {
+        const [result, metadata] = await sequelize.query(
+          `SELECT UserPermissions.uid FROM UserPermissions 
+          LEFT JOIN Users ON UserPermissions.usersId = Users.uid
+          WHERE Users.uid=? AND UserPermissions.uid=?
+          LIMIT 1`, 
+          {
+            replacements: [ id, permissionId],
+            type: QueryTypes.SELECT,
+          },
+        );
+        const [result2, metadata2] = await sequelize.query(
+          `SELECT UserPermissions.uid FROM UserPermissions 
+          LEFT JOIN UserGroupRolePermissions ON 
+            UserPermissions.uid = UserGroupRolePermissions.userPermissionsId
+          LEFT JOIN UserGroupRoles ON
+            UserGroupRolePermissions.usersId = UserGroupRoles.usersId
+          LEFT JOIN Users ON
+            UserGroupRoles.usersId = Users.uid
+          WHERE Users.uid=? AND UserPermissions.uid=?
+          LIMIT 1`, 
+          {
+            replacements: [ id, permissionId],
+            type: QueryTypes.SELECT,
+          },
+        );
+        if (
+          false === (result || result2)
+        ) {
+          return res;
+        }
+        res = true;
+        return res;
+      } catch(err) {
+        if (config.nodeEnv !== 'production') {
+          console.log('error : '+err.message);
+        }
+        return res;
+      }
+    }
   }
   User.init({
     uid: DataTypes.INTEGER,

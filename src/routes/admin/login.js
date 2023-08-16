@@ -3,6 +3,7 @@ const express = require('express');
 const deepClone = require('deep-clone');
 const config = require('../../config');
 const db = require('../../models/index');
+const { ACCESS_ADMIN, } = require('../../constants/permissions');
 
 const login = express.Router();
 
@@ -84,6 +85,24 @@ login.post('/', async (req, res) => {
     res.status(400);
     return res.json({ 
       message: 'Invalid user and password combination.',
+    });
+  }
+  try {
+    const hasPermission = await db.sequelize.models
+      .User
+      .userHasPermission(req.session.auth.uid, ACCESS_ADMIN);
+    if (hasPermission === false) {
+      res.status(401);
+      return res.json({ 
+        message: 'Unauthorized.',
+        error: 'Unauthorized.', /* error is shown in frontend validation */
+      });
+    }
+  } catch (err) {
+    res.status(401);
+    return res.json({ 
+      message: 'Unauthorized.',
+      error: 'Unauthorized.',
     });
   }
   try {
