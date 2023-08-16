@@ -1,6 +1,5 @@
 'use strict';
 const { Model, } = require('sequelize');
-const { QueryTypes, } = require('sequelize');
 const config = require('../config');
 const { validate, } = require('email-validator');
 const { 
@@ -81,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
             WHERE Users.uid = :id`, 
           {
                 replacements: { id, },
-                type: QueryTypes.UPDATE,
+                type: sequelize.QueryTypes.UPDATE,
           },
         );
       } catch(err) {
@@ -106,7 +105,7 @@ module.exports = (sequelize, DataTypes) => {
           updatedAt, username FROM Users WHERE Users.uid=? LIMIT 1`, 
           {
               replacements: [ id, ],
-              type: QueryTypes.SELECT,
+              type: sequelize.QueryTypes.SELECT,
           },
         );
         res = result;
@@ -132,7 +131,7 @@ module.exports = (sequelize, DataTypes) => {
           WHERE UserTokens.token=? LIMIT 1`, 
           {
               replacements: [ token, ],
-              type: QueryTypes.SELECT,
+              type: sequelize.QueryTypes.SELECT,
           },
         );
         res = result;
@@ -158,7 +157,7 @@ module.exports = (sequelize, DataTypes) => {
           updatedAt, username FROM Users WHERE Users.email=? LIMIT 1`, 
         {
             replacements: [ email, ],
-            type: QueryTypes.SELECT,
+            type: sequelize.QueryTypes.SELECT,
         },
       );
         res = result;
@@ -189,7 +188,7 @@ module.exports = (sequelize, DataTypes) => {
           )`, 
           {
               replacements: [ id, result.hash, ],
-                type: QueryTypes.INSERT,
+                type: sequelize.QueryTypes.INSERT,
           },
         );
         
@@ -282,7 +281,7 @@ module.exports = (sequelize, DataTypes) => {
           LIMIT 1`, 
           {
             replacements: [ id, permissionId],
-            type: QueryTypes.SELECT,
+            type: sequelize.QueryTypes.SELECT,
           },
         );
         const [result2, metadata2] = await sequelize.query(
@@ -299,7 +298,7 @@ module.exports = (sequelize, DataTypes) => {
           LIMIT 1`, 
           {
             replacements: [ id, permissionId],
-            type: QueryTypes.SELECT,
+            type: sequelize.QueryTypes.SELECT,
           },
         );
         if (
