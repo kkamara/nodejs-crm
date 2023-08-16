@@ -277,7 +277,7 @@ module.exports = (sequelize, DataTypes) => {
           `SELECT UserPermissions.uid FROM UserPermissions 
           LEFT JOIN UserAssignedPermissions 
             ON UserAssignedPermissions.permissionId = UserPermissions.uid
-          LEFT JOIN Users ON UserAssignedPermissions.uid = Users.uid
+          LEFT JOIN Users ON UserAssignedPermissions.usersId = Users.uid
           WHERE Users.uid=? AND UserPermissions.uid=?
           LIMIT 1`, 
           {
