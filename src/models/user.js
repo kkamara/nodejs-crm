@@ -293,6 +293,8 @@ module.exports = (sequelize, DataTypes) => {
             UserGroupRolePermissions.usersId = UserGroupRoles.usersId
           LEFT JOIN Users ON
             UserGroupRoles.usersId = Users.uid
+          LEFT JOIN UserRoles
+            ON UserGroupRoles.userRolesId = UserRoles.uid
           WHERE Users.uid=? AND UserPermissions.uid=?
           LIMIT 1`, 
           {
