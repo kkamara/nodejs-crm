@@ -275,7 +275,9 @@ module.exports = (sequelize, DataTypes) => {
       try {
         const [result, metadata] = await sequelize.query(
           `SELECT UserPermissions.uid FROM UserPermissions 
-          LEFT JOIN Users ON UserPermissions.usersId = Users.uid
+          LEFT JOIN UserAssignedPermissions 
+            ON UserAssignedPermissions.permissionId = UserPermissions.uid
+          LEFT JOIN Users ON UserAssignedPermissions.uid = Users.uid
           WHERE Users.uid=? AND UserPermissions.uid=?
           LIMIT 1`, 
           {
