@@ -3,7 +3,7 @@ const express = require('express');
 const deepClone = require('deep-clone');
 const config = require('../../config');
 const db = require('../../models/index');
-const { ACCESS_ADMIN, } = require('../../constants/permissions');
+const { ACCESS_ADMIN, } = require('../../constants/userPermissions');
 
 const login = express.Router();
 
