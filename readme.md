@@ -99,7 +99,7 @@ npx sequelize-cli db:seed:undo $SEQUELIZE_ARGS
 npx sequelize-cli db:seed:undo:all $SEQUELIZE_ARGS
 ```
 
-See [package.json](https://github.com/kkamara/nodejs-react-boilerplate/blob/main/package.json) for helpful commands related to using the database.
+See [package.json](https://github.com/kkamara/nodejs-reactjs-boilerplate/blob/main/package.json) for helpful commands related to using the database.
 
 ```json
 ...
