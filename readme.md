@@ -6,7 +6,7 @@
 
 # nodejs-crm
 
-(02-Jul-2023) Nodejs, Mysql, Redis, Reactjs.
+(02-Jul-2023) Nodejs, MySQL, Redis, ReactJS 16.
 
 ## App Security with Node.js
 
